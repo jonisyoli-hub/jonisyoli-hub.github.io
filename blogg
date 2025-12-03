@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Minimal Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --accent: #2563eb;
+      --border-soft: #e5e7eb;
+      --radius-lg: 14px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #e5edff 0, #f5f5f7 55%);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* Layout */
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 3rem;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 160deg,
+        #2563eb,
+        #4f46e5,
+        #0ea5e9,
+        #2563eb
+      );
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.55);
+    }
+
+    .brand-text-main {
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      font-size: 1.05rem;
+    }
+
+    .brand-text-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    nav a {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      position: relative;
+      padding-bottom: 0.15rem;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.18s ease-out;
+    }
+
+    nav a:hover {
+      color: var(--text-main);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero / Intro */
+
+    .hero {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      border-radius: 22px;
+      padding: 1.75rem 1.75rem 1.5rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      margin-bottom: 2rem;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-title {
+      font-size: clamp(1.8rem, 3vw, 2.35rem);
+      font-weight: 650;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      max-width: 32rem;
+      font-size: 0.97rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .hero-meta span {
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4f46e5;
+      font-size: 0.75rem;
+    }
+
+    /* Posts list */
+
+    .posts {
+      margin-top: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .post {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.3rem 1.2rem;
+      margin-bottom: 0.9rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+      column-gap: 1.5rem;
+      border: 1px solid var(--border-soft);
+      transition: transform 0.14s ease-out, box-shadow 0.14s ease-out,
+        border-color 0.14s ease-out, background 0.14s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .post::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 12px;
+      bottom: 12px;
+      width: 3px;
+      border-radius: 999px;
+      background: linear-gradient(to bottom, #2563eb, #0ea5e9);
+      opacity: 0.22;
+      transition: opacity 0.16s ease-out, transform 0.16s ease-out;
+    }
+
+    .post:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+      border-color: #d4ddf7;
+      background: #ffffff;
+    }
+
+    .post:hover::before {
+      opacity: 0.9;
+      transform: translateX(1px);
+    }
+
+    .post-main {
+      min-width: 0;
+    }
+
+    .post-title {
+      font-size: 1.02rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .post-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .post-title a:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+    }
+
+    .post-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .post-excerpt {
+      font-size: 0.9rem;
+      color: #4b5563;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .post-side {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .tag {
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+
+    .read-time {
+      font-size: 0.78rem;
+    }
+
+    .read-link {
+      font-size: 0.8rem;
+      text-decoration: none;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .read-link span {
+      font-size: 0.95em;
+    }
+
+    .read-link:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-soft);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 700px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      nav a {
+        margin-left: 0;
+        margin-right: 1.2rem;
+      }
+
+      .hero {
+        padding: 1.4rem 1.25rem 1.3rem;
+      }
+
+      .post {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 0.8rem;
+      }
+
+      .post-side {
+        align-items: flex-start;
+        text-align: left;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div>
+          <div class="brand-text-main">Your Name</div>
+          <div class="brand-text-sub">Minimal blog · Thoughts & insights</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#posts">Blog</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-kicker">Blog</div>
+      <h1 class="hero-title">Clear, focused writing on [your topics].</h1>
+      <p class="hero-subtitle">
+        Short, practical posts about <strong>design</strong>, <strong>productivity</strong>,
+        and <strong>building things on the web</strong>. No noise, just signal.
+      </p>
+      <div class="hero-meta">
+        <span>New posts occasionally</span>
+        <span>Minimal & distraction-free</span>
+      </div>
+    </section>
+
+    <section id="posts" class="posts">
+      <div class="section-title">Latest posts</div>
+
+      <!-- Post 1 -->
+      <article class="post">
+        <div class="post-main">
+          <h2 class="post-title">
+            <a href="#">How to keep your website clean and focused</a>
+          </h2>
+          <div class="post-meta">Jan 3, 2025 · Design, UX</div>
+          <p class="post-excerpt">
+            Most websites try to say too many things at once. Here’s how to
+            reduce visual noise, focus on what matters, and make your content
+            easier to read.
+          </p>
+        </div>
+        <div class="post-side">
+          <span class="tag">Design</span>
+          <span class="read-time">4 min read</span>
+          <a href="#" class="read-link">
+            <span>Read</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Post 2 -->
+      <article class="post">
+        <div class="post-main">
+          <h2 class="post-title">
+            <a href="#">A simple writing routine that actually works</a>
+          </h2>
+          <div class="post-meta">Dec 18, 2024 · Writing</div>
+          <p class="post-excerpt">
+            You don’t need a complicated system to publish consistently.
+            A small, repeatable process is enough to keep your blog alive.
+          </p>
+        </div>
+        <div class="post-side">
+          <span class="tag">Writing</span>
+          <span class="read-time">3 min read</span>
+          <a href="#" class="read-link">
+            <span>Read</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Post 3 -->
+      <article class="post">
+        <div class="post-main">
+          <h2 class="post-title">
+            <a href="#">Tools I use to run this blog</a>
+          </h2>
+          <div class="post-meta">Nov 30, 2024 · Tools</div>
+          <p class="post-excerpt">
+            From writing to publishing, here are the simple tools that help
+            me keep everything lightweight and maintainable.
+          </p>
+        </div>
+        <div class="post-side">
+          <span class="tag">Tools</span>
+          <span class="read-time">5 min read</span>
+          <a href="#" class="read-link">
+            <span>Read</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+    </section>
+
+    <section id="about" style="margin-top: 2.5rem;">
+      <div class="section-title">About</div>
+      <p style="max-width: 36rem; color: var(--text-muted); font-size: 0.95rem;">
+        I’m <strong>Your Name</strong>, a [role] based in [location]. I write
+        about [topics you care about]. This blog is a place to capture ideas,
+        experiments, and things I’ve learned along the way.
+      </p>
+    </section>
+
+    <section id="contact" style="margin-top: 2rem;">
+      <div class="section-title">Contact</div>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        For questions, collaboration, or just to say hi:
+      </p>
+      <p style="margin-top: 0.4rem; font-size: 0.95rem;">
+        ✉️ <a href="mailto:you@example.com" style="color: var(--accent); text-decoration: none;">
+          you@example.com
+        </a>
+        <br />
+        🔗 <a href="#" style="color: var(--accent); text-decoration: none;">LinkedIn</a> ·
+        <a href="#" style="color: var(--accent); text-decoration: none;">GitHub</a>
+      </p>
+    </section>
+
+    <footer>
+      <span>&copy; <span id="year"></span> Your Name. All rights reserved.</span>
+      <span>Built with plain HTML &amp; CSS.</span>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
